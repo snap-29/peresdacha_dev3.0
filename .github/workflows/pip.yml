@@ -27,6 +27,8 @@ jobs:
           echo "Commit: $GITHUB_SHA" >> report/report.txt
           echo "Status: ${{ job.status }}" >> report/report.txt
           echo "Triggered by: ${{ github.actor }}" >> report/report.txt
+          echo "Run ID: ${{ github.run_id }}" >> report/report.txt
+          echo "Run Number: ${{ github.run_number }}" >> report/report.txt
       - if: always()
         uses: actions/upload-artifact@v4
         with:
@@ -34,13 +36,9 @@ jobs:
           path: report/report.txt
       - if: always()
         continue-on-error: true
-        env:
-          GEORGE: ${{ secrets.GEORGE }}
         run: |
           DATE=$(date '+%Y-%m-%d %H:%M:%S')
           RUN_URL="https://github.com/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
-          BOT_TOKEN=$(echo $GEORGE | cut -d':' -f1)
-          CHAT_ID=$(echo $GEORGE | cut -d':' -f2)
           {
             echo "DevOps Notifier - Pipeline завершён"
             echo ""
@@ -50,6 +48,7 @@ jobs:
             echo "Автор: ${{ github.actor }}"
             echo "Дата: $DATE"
             echo "Статус: ${{ job.status }}"
+            echo "Номер запуска: ${{ github.run_number }}"
             echo ""
             echo "Ссылка на запуск:"
             echo "$RUN_URL"
