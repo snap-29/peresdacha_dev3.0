@@ -34,13 +34,9 @@ jobs:
           path: report/report.txt
       - if: always()
         continue-on-error: true
-        env:
-          GEORGE: ${{ secrets.GEORGE }}
         run: |
           DATE=$(date '+%Y-%m-%d %H:%M:%S')
           RUN_URL="https://github.com/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
-          BOT_TOKEN=$(echo $GEORGE | cut -d':' -f1)
-          CHAT_ID=$(echo $GEORGE | cut -d':' -f2)
           {
             echo "DevOps Notifier - Pipeline завершён"
             echo ""
